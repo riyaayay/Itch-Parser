@@ -1,0 +1,14 @@
+[options]
+mode bmc
+depth 20
+
+[engines]
+smtbmc boolector
+
+[script]
+read_verilog -formal -Irtl rtl/t2t_sfifo.v
+prep -top t2t_sfifo
+
+[files]
+rtl/t2t_defs.vh
+rtl/t2t_sfifo.v
