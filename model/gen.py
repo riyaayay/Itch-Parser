@@ -63,6 +63,42 @@ def write_stim_hex(beats: List[Tuple[bytes, int, bool]], out_file: pathlib.Path)
             f.write(f"{gap} {tlast_str} {tkeep_str} {tdata_str}\n")
 
 
+def write_ctrl_config(
+    out_dir: pathlib.Path,
+    sym_configs: List[Tuple[int, TriggerConfig, RiskSymbolConfig]],
+    gcfg: RiskGlobalConfig = None
+):
+    with open(out_dir / "ctrl.txt", "w", encoding="ascii") as f:
+        # Global risk settings
+        if gcfg is not None:
+            f.write(f"0 W 800 {gcfg.max_gross:08X}\n")
+            f.write(f"0 W 808 {gcfg.max_orders:08X}\n")
+            f.write(f"0 W 80C {gcfg.win_shift:08X}\n")
+        else:
+            f.write("0 W 800 FFFFFFFF\n")
+            f.write("0 W 808 0000FFFF\n")
+            f.write("0 W 80C 00000005\n")
+
+        # Per-symbol configs
+        for sym, tcfg, rcfg in sym_configs:
+            base = 0x400 + 0x40 * sym
+            ctrl_val = (tcfg.en & 1) | ((rcfg.cfg_valid & 1) << 1) | ((tcfg.rule_mask & 0xF) << 4) | ((tcfg.imb_shift & 0x7) << 8)
+            f.write(f"0 W {base+0x08:03X} {ctrl_val:08X}\n")
+            f.write(f"0 W {base+0x0C:03X} {tcfg.buy_limit:08X}\n")
+            f.write(f"0 W {base+0x10:03X} {tcfg.sell_limit:08X}\n")
+            f.write(f"0 W {base+0x14:03X} {tcfg.max_spread:08X}\n")
+            f.write(f"0 W {base+0x18:03X} {tcfg.qty:08X}\n")
+            f.write(f"0 W {base+0x1C:03X} {rcfg.max_qty:08X}\n")
+            f.write(f"0 W {base+0x20:03X} {rcfg.max_notional & 0xFFFFFFFF:08X}\n")
+            f.write(f"0 W {base+0x24:03X} {(rcfg.max_notional >> 32) & 0xFFFF:08X}\n")
+            f.write(f"0 W {base+0x28:03X} {rcfg.collar_abs:08X}\n")
+            f.write(f"0 W {base+0x2C:03X} {rcfg.ref_px:08X}\n")
+            f.write(f"0 W {base+0x30:03X} {rcfg.max_pos:08X}\n")
+
+        # Enable global_enable (bit 3) and clear kill_switch (bit 1 = 0)
+        f.write("0 W 004 00000008\n")
+
+
 def gen_legacy_suite(out_dir: pathlib.Path):
     """
     MDL-3 / IT-2: Regenerate upstream sim_data.hex with valid 38-byte framing
@@ -98,19 +134,23 @@ def gen_legacy_suite(out_dir: pathlib.Path):
     beats = AxisFramerModel.pack_stream_into_beats(bytes(stream))
     write_stim_hex(beats, out_dir / "stim.hex")
 
-    with open(out_dir / "ctrl.txt", "w", encoding="ascii") as f:
-        f.write("# No runtime AXI-Lite overrides\n")
+    sym0_tcfg = TriggerConfig(
+        en=True, rule_mask=0x0F, imb_shift=0,
+        buy_limit=6000000, sell_limit=5000000, max_spread=100000, qty=10
+    )
+    sym0_rcfg = RiskSymbolConfig(
+        cfg_valid=True, max_qty=500, max_notional=100_000_000,
+        collar_abs=200000, ref_px=5950000, max_pos=1000
+    )
+
+    write_ctrl_config(out_dir, [(0, sym0_tcfg, sym0_rcfg)])
 
     with open(out_dir / "txready.txt", "w", encoding="ascii") as f:
         f.write("1\n")
 
     # Run replay to produce exp_op1..exp_op6 and exp_counters
     replay = PipelineReplay(symbols=DEFAULT_SYMBOLS)
-    replay.configure_symbol(
-        sym=0,
-        tcfg=TriggerConfig(en=True, rule_mask=0x0F, imb_shift=0, buy_limit=6000000, sell_limit=5000000, max_spread=100000, qty=10),
-        rcfg=RiskSymbolConfig(cfg_valid=True, max_qty=500, max_notional=100_000_000, collar_abs=200000, ref_px=5950000, max_pos=1000)
-    )
+    replay.configure_symbol(sym=0, tcfg=sym0_tcfg, rcfg=sym0_rcfg)
     replay.process_beats(beats)
     replay.write_expected_outputs(out_dir)
     print(f"MDL-3: Successfully generated legacy suite in {out_dir} (20 blocks, 760 bytes, {len(beats)} beats)")
@@ -171,23 +211,32 @@ def gen_directed_suite(out_dir: pathlib.Path):
     beats = AxisFramerModel.pack_stream_into_beats(bytes(stream))
     write_stim_hex(beats, out_dir / "stim.hex")
 
-    with open(out_dir / "ctrl.txt", "w", encoding="ascii") as f:
-        f.write("# Directed scenario ctrl config\n")
+    sym0_tcfg = TriggerConfig(
+        en=True, rule_mask=0x0F, imb_shift=0,
+        buy_limit=1600000, sell_limit=1400000, max_spread=50000, qty=25
+    )
+    sym0_rcfg = RiskSymbolConfig(
+        cfg_valid=True, max_qty=500, max_notional=100_000_000,
+        collar_abs=100000, ref_px=1500000, max_pos=1000
+    )
+
+    sym1_tcfg = TriggerConfig(
+        en=True, rule_mask=0x0F, imb_shift=0,
+        buy_limit=4600000, sell_limit=4400000, max_spread=50000, qty=10
+    )
+    sym1_rcfg = RiskSymbolConfig(
+        cfg_valid=True, max_qty=100, max_notional=100_000_000,
+        collar_abs=100000, ref_px=4500000, max_pos=500
+    )
+
+    write_ctrl_config(out_dir, [(0, sym0_tcfg, sym0_rcfg), (1, sym1_tcfg, sym1_rcfg)])
 
     with open(out_dir / "txready.txt", "w", encoding="ascii") as f:
         f.write("1\n")
 
     replay = PipelineReplay(symbols=DEFAULT_SYMBOLS)
-    replay.configure_symbol(
-        sym=0,
-        tcfg=TriggerConfig(en=True, rule_mask=0x0F, imb_shift=0, buy_limit=1600000, sell_limit=1400000, max_spread=50000, qty=25),
-        rcfg=RiskSymbolConfig(cfg_valid=True, max_qty=500, max_notional=100_000_000, collar_abs=100000, ref_px=1500000, max_pos=1000)
-    )
-    replay.configure_symbol(
-        sym=1,
-        tcfg=TriggerConfig(en=True, rule_mask=0x0F, imb_shift=0, buy_limit=4600000, sell_limit=4400000, max_spread=50000, qty=10),
-        rcfg=RiskSymbolConfig(cfg_valid=True, max_qty=100, max_notional=100_000_000, collar_abs=100000, ref_px=4500000, max_pos=500)
-    )
+    replay.configure_symbol(sym=0, tcfg=sym0_tcfg, rcfg=sym0_rcfg)
+    replay.configure_symbol(sym=1, tcfg=sym1_tcfg, rcfg=sym1_rcfg)
     replay.process_beats(beats)
     replay.write_expected_outputs(out_dir)
     print(f"Directed: Successfully generated directed suite in {out_dir} ({len(stream)} bytes, {len(beats)} beats)")

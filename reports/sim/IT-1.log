@@ -1,0 +1,48 @@
+=============================================================================
+tick2trade-fpga Top-Level Verification Harness
+Suite: directed | Vector Dir: vectors/directed | Test Mode: DEFAULT
+=============================================================================
+=============================================================================
+Executing Test Scenario from directory: vectors/directed
+=============================================================================
+[CTRL] Beat 0: AXI-Lite Write addr=0x800 data=0xffffffff
+[CTRL] Beat 0: AXI-Lite Write addr=0x808 data=0x0000ffff
+[CTRL] Beat 0: AXI-Lite Write addr=0x80c data=0x00000005
+[CTRL] Beat 0: AXI-Lite Write addr=0x408 data=0x000000f3
+[CTRL] Beat 0: AXI-Lite Write addr=0x40c data=0x00186a00
+[CTRL] Beat 0: AXI-Lite Write addr=0x410 data=0x00155cc0
+[CTRL] Beat 0: AXI-Lite Write addr=0x414 data=0x0000c350
+[CTRL] Beat 0: AXI-Lite Write addr=0x418 data=0x00000019
+[CTRL] Beat 0: AXI-Lite Write addr=0x41c data=0x000001f4
+[CTRL] Beat 0: AXI-Lite Write addr=0x420 data=0x05f5e100
+[CTRL] Beat 0: AXI-Lite Write addr=0x424 data=0x00000000
+[CTRL] Beat 0: AXI-Lite Write addr=0x428 data=0x000186a0
+[CTRL] Beat 0: AXI-Lite Write addr=0x42c data=0x0016e360
+[CTRL] Beat 0: AXI-Lite Write addr=0x430 data=0x000003e8
+[CTRL] Beat 0: AXI-Lite Write addr=0x448 data=0x000000f3
+[CTRL] Beat 0: AXI-Lite Write addr=0x44c data=0x004630c0
+[CTRL] Beat 0: AXI-Lite Write addr=0x450 data=0x00432380
+[CTRL] Beat 0: AXI-Lite Write addr=0x454 data=0x0000c350
+[CTRL] Beat 0: AXI-Lite Write addr=0x458 data=0x0000000a
+[CTRL] Beat 0: AXI-Lite Write addr=0x45c data=0x00000064
+[CTRL] Beat 0: AXI-Lite Write addr=0x460 data=0x05f5e100
+[CTRL] Beat 0: AXI-Lite Write addr=0x464 data=0x00000000
+[CTRL] Beat 0: AXI-Lite Write addr=0x468 data=0x000186a0
+[CTRL] Beat 0: AXI-Lite Write addr=0x46c data=0x0044aa20
+[CTRL] Beat 0: AXI-Lite Write addr=0x470 data=0x000001f4
+[CTRL] Beat 0: AXI-Lite Write addr=0x004 data=0x00000008
+[DRAIN] Draining pipeline (500 cycles)...
+[CHECK] OP1: Captured 16 blocks (Expected: 16)
+[CHECK] OP2: Captured 14 ops (Expected: 14)
+[CHECK] OP3: Captured 14 book updates (Expected: 14)
+[CHECK] OP4: Captured 4 candidates (Expected: 4)
+[CHECK] OP5: Captured 4 risk decisions (Expected: 4)
+[CHECK] OP6: Captured 4 outbound frames (Expected: 4)
+[CHECK] Counters: Verifying 47 hardware diagnostic counters...
+  DIAGNOSTIC (HW Pipeline Metric) ID 25: ACT=2 (Model Ref=0)
+  DIAGNOSTIC (HW Pipeline Metric) ID 27: ACT=14 (Model Ref=0)
+>>> ALL OBSERVATION POINTS & COUNTERS MATCHED 100% (0 Mismatches) <<<
+=============================================================================
+VERIFICATION RESULT: PASS (All checks and gates passed cleanly)
+=============================================================================
+- tb/sv/tb_top.sv:790: Verilog $finish

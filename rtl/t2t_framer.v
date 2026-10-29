@@ -148,8 +148,8 @@ module t2t_framer (
 
     // FSM & Datapath
     always @(posedge clk) begin
-        if (rst) begin
-            state        <= ST_SYNC_WAIT;
+        if (rst || i_init_busy) begin
+            state        <= ST_RUN;
             b0_data      <= 512'd0;
             b0_keep      <= 64'd0;
             b0_last      <= 1'b0;

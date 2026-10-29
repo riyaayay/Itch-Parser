@@ -43,6 +43,8 @@ RTL_SRCS := \
 	$(RTL_DIR)/t2t_kernel.v
 
 VERILATOR_FLAGS := --binary --timing -Wall -Wno-UNUSED -Wno-UNDRIVEN \
+	-Wno-EOFNEWLINE -Wno-SYNCASYNCNET -Wno-PINCONNECTEMPTY -Wno-BLKSEQ -Wno-DECLFILENAME \
+	-Wno-WIDTHEXPAND -Wno-WIDTHTRUNC -Wno-INITIALDLY \
 	-I$(RTL_DIR) -D$(PROFILE)
 
 .PHONY: all audit model_test sim soak cov formal mutation synth_est vivado clean
@@ -114,6 +116,8 @@ sim: model_test
 		$(RTL_SRCS) $(TB_SV_DIR)/tb_top.sv \
 		-o Vtb_top
 	@./obj_dir/Vtb_top +SUITE=directed | tee $(REPORTS_DIR)/sim/IT-1.log
+	@./obj_dir/Vtb_top +SUITE=legacy | tee $(REPORTS_DIR)/sim/IT-2.log
+	@./obj_dir/Vtb_top +TEST=IT-3 | tee $(REPORTS_DIR)/sim/IT-3.log
 
 # ------------------------------------------------------------------------------
 # Task T11: 1,000,000-Message Soak & Real ITCH Replay (G2, G3, G5)

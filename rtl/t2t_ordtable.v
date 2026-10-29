@@ -19,7 +19,7 @@ module t2t_ordtable #(
     // Interface from FA FIFO (FA bus: {hit[0], sym[3:0], MSG[319:0]})
     input  wire                   i_valid,
     input  wire [324:0]           i_fa,
-    output reg                    o_pop,
+    output wire                   o_pop,
 
     // Flow control from FB FIFO
     input  wire                   i_fb_afull,
@@ -172,8 +172,17 @@ module t2t_ordtable #(
                            (stg2_valid && (stg2_set == issue_set)) ||
                            (stg3_valid && (stg3_set == issue_set));
 
+    // Replace (U) atomicity: while a Replace is inflight, do not issue next message from FA FIFO
+    wire replace_inflight = (stg1_valid && (stg1_type == `T2T_TYPE_U)) ||
+                            (stg2_valid && (stg2_type == `T2T_TYPE_U)) ||
+                            u_pending;
+
     // Can issue new op from Stage 0 into Stage 1?
-    wire can_issue = !i_init_busy && !i_fb_afull && (is_replace_subop2 || i_valid) && !same_set_hazard;
+    wire can_issue = !i_init_busy && !i_fb_afull && !same_set_hazard &&
+                     (is_replace_subop2 || (i_valid && !replace_inflight));
+
+    // Combinational pop to FA FIFO
+    assign o_pop = can_issue && !is_replace_subop2;
 
     // Stage 0: Read Address Generation
     always @(*) begin
@@ -203,11 +212,9 @@ module t2t_ordtable #(
             stg1_price   <= 32'd0;
             stg1_newref  <= 64'd0;
             stg1_subop2  <= 1'b0;
-            o_pop        <= 1'b0;
             o_cnt_same_set_stall <= 1'b0;
         end else begin
             o_cnt_same_set_stall <= 1'b0;
-            o_pop                <= 1'b0;
 
             if (can_issue) begin
                 stg1_valid   <= 1'b1;
@@ -222,13 +229,9 @@ module t2t_ordtable #(
                 stg1_price   <= issue_price;
                 stg1_newref  <= issue_newref;
                 stg1_subop2  <= issue_subop2;
-
-                if (!is_replace_subop2) begin
-                    o_pop <= 1'b1; // Pop candidate from FA FIFO
-                end
             end else begin
                 stg1_valid <= 1'b0;
-                if ((is_replace_subop2 || i_valid) && same_set_hazard && !i_fb_afull) begin
+                if ((is_replace_subop2 || (i_valid && !replace_inflight)) && same_set_hazard && !i_fb_afull) begin
                     o_cnt_same_set_stall <= 1'b1;
                 end
             end
@@ -405,6 +408,10 @@ module t2t_ordtable #(
             o_cnt_set_full      <= 1'b0;
             o_cnt_qty_underflow <= 1'b0;
 
+            if (can_issue && is_replace_subop2) begin
+                u_pending <= 1'b0;
+            end
+
             if (stg2_valid) begin
                 case (stg2_type)
                     // ---------------------------------------------------------
@@ -415,19 +422,16 @@ module t2t_ordtable #(
                             // Side is not B or S: CORRUPT(sym), last
                             o_op_valid <= 1'b1;
                             o_op       <= make_op(stg2_idx, `T2T_OP_CORRUPT, stg2_sym, `T2T_SIDE_BID, 1'b0, 1'b1, 32'd0, 32'd0);
-                            if (stg2_subop2) u_pending <= 1'b0;
                         end else if (hit_any) begin
                             // Duplicate reference: CORRUPT(sym), last
                             o_cnt_dup_ref <= 1'b1;
                             o_op_valid    <= 1'b1;
                             o_op          <= make_op(stg2_idx, `T2T_OP_CORRUPT, stg2_sym, stg2_side, 1'b0, 1'b1, 32'd0, 32'd0);
-                            if (stg2_subop2) u_pending <= 1'b0;
                         end else if (!has_empty) begin
                             // Set full: CORRUPT(sym), last
                             o_cnt_set_full <= 1'b1;
                             o_op_valid     <= 1'b1;
                             o_op           <= make_op(stg2_idx, `T2T_OP_CORRUPT, stg2_sym, stg2_side, 1'b0, 1'b1, 32'd0, 32'd0);
-                            if (stg2_subop2) u_pending <= 1'b0;
                         end else begin
                             // Valid insert: ADD(sym, side, price, shares, remove=0), last
                             o_cnt_ins     <= 1'b1;
@@ -435,7 +439,6 @@ module t2t_ordtable #(
                             o_op          <= make_op(stg2_idx, `T2T_OP_ADD, stg2_sym, stg2_side, 1'b0, 1'b1, stg2_price, stg2_shares);
                             wr_en[empty_way_idx] <= 1'b1;
                             wr_data       <= {1'b1, stg2_ref, stg2_sym, stg2_side, stg2_price, stg2_shares};
-                            if (stg2_subop2) u_pending <= 1'b0;
                         end
                     end
 
@@ -513,3 +516,4 @@ module t2t_ordtable #(
     end
 
 endmodule
+
