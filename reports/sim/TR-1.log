@@ -1,0 +1,47 @@
+===============================================================
+[TR-1] Beginning Verification of Edge-Triggered Trading Rules
+===============================================================
+
+--- Sub-case (a): Each rule fires ---
+[PASS] TR-1.a.0: Rule 0 CROSS_BUY fired: side=BUY px=990 qty=500 rule=0
+[PASS] TR-1.a.1: Rule 1 CROSS_SELL fired: side=SELL px=920 qty=300 rule=1
+[PASS] TR-1.a.2: Rule 2 IMB_BUY fired: side=BUY px=950 qty=400 rule=2
+[PASS] TR-1.a.3: Rule 3 IMB_SELL fired: side=SELL px=900 qty=250 rule=3
+
+--- Sub-case (b): Priority ---
+[PASS] TR-1.b.0: Rule 0 wins over Rule 1, 2
+[PASS] TR-1.b.1: Rule 1 wins over Rule 2
+
+--- Sub-case (c): Edge re-arming ---
+[PASS] TR-1.c.1: Initial condition fires
+[PASS] TR-1.c.2: Condition still true does not fire (edge-triggered)
+[PASS] TR-1.c.3: Condition drop re-arms without firing
+[PASS] TR-1.c.4: Rule fires again after re-arming
+
+--- Sub-case (d): Blocked by stale ---
+[PASS] TR-1.d.1: Blocked by bid_stale
+[PASS] TR-1.d.2: Blocked by ask_stale
+
+--- Sub-case (e): Blocked by corrupt ---
+[PASS] TR-1.e: Blocked by corrupt
+
+--- Sub-case (f): Blocked by crossed ---
+[PASS] TR-1.f: Blocked by crossed book (bid >= ask)
+
+--- Sub-case (g): Blocked by spread ---
+[PASS] TR-1.g: Blocked by spread > max_spread
+
+--- Sub-case (h): Blocked by enables / session ---
+[PASS] TR-1.h.1: Blocked by global_enable = 0
+[PASS] TR-1.h.2: Blocked by session_invalid = 1
+[PASS] TR-1.h.3: Blocked by cfg.en = 0
+
+--- Sub-case (i): Replace first op causes no candidate ---
+[PASS] TR-1.i.1: Replace first op (last=0) emits no candidate
+[PASS] TR-1.i.2: Replace second op (last=1) fires normally
+
+===============================================================
+[TR-1] Summary: 20 PASSED, 0 FAILED
+===============================================================
+[GATE PASS] TR-1: All trading rule sub-cases verified successfully.
+- tb/sv/tb_trigger.sv:502: Verilog $finish

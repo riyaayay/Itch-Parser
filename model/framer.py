@@ -163,3 +163,4 @@ class AxisFramerModel:
             beats.append((tdata, tkeep, is_last))
             offset += 64
         return beats
+

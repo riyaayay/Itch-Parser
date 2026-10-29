@@ -1,0 +1,15 @@
+=============================================================================
+CHAR-2: Instrumented Upstream itch_decoder.v Characterisation (VERIFY-4)
+=============================================================================
+--- Part 1: Streaming 720-byte upstream/sim_data.hex ---
+[CHAR-2 PART 1] Completed 720-byte sim_data.hex stream at t=7525000 ns.
+[CHAR-2 PART 1] order_valid_pulses=0 | final order_shares=0x00050000 | final order_price=0xc4b80000
+--- Part 2: Streaming clean 38-byte Add Order (Price=0x001A2B3C, Shares=0x00000064) ---
+[CHAR-2 PART 2] Expected Shares = 0x00000064 | Captured order_shares = 0x00000064
+[CHAR-2 PART 2] Expected Price  = 0x001A2B3C | Captured order_price  = 0x001a2b00 (LSB 0x3c dropped -> 0x00)
+[CHAR-2 PART 2] order_valid_pulses = 0
+-----------------------------------------------------------------------------
+VERIFY-4 / CHAR-2 RESULT: PASS (Confirmed F2 & F3: order_valid pulses = 0,
+and order_price[7:0] is never captured because next_state=IDLE on byte_count==35).
+=============================================================================
+tb/sv/tb_char_upstream.sv:197: $finish called at 8055000 (1ps)

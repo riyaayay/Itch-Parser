@@ -1,0 +1,50 @@
+=============================================================================
+CHAR-3: Upstream sim_data.hex Forensic Audit Report (VERIFY-6 / Finding F10)
+=============================================================================
+Input File          : upstream/sim_data.hex
+SHA-256             : b52cd7a00151875849a221ad2c7255bf8443322ae09ca05c33310b6256855bc5
+Total Byte Count    : 720
+Header (00 24 41) # : 20
+Uniform Block Stride: 36 bytes
+Block Count (720/36): 20
+
+--- Summary of Fields Across All 20 Fixed-Stride (36B) Blocks ---
+Length Prefix Values: [36] (0x0024 = 36 decimal; excludes 2B prefix -> requires 38B total per block, actual is 36B)
+Message Types       : ['0x41 (A)']
+Locate Values       : ['0x0000']
+Reference Values    : ['0x0000000000000000']
+Side Bytes          : ['0x00']
+Stock Bytes (8B hex): [b'\x00\x00\x00\x00\x00\x00\x00\x00']
+
+--- Per-Block Breakdown (Fixed 36-Byte Stride) ---
+Blk | ByteOff | LenPfx | Type    | Raw[20:23] (Shares) | Payload[20:23] | Raw[32:35] (Price/Tail)
+----+---------+--------+---------+---------------------+----------------+------------------------
+  0 |       0 | 0x0024 | 0x41 ('A') | 0x00000005 (     5) | 0x00050000     | 0x005AC4B8 (   5948600)
+  1 |      36 | 0x0024 | 0x41 ('A') | 0x0000001F (    31) | 0x001F0000     | 0x005ACA30 (   5950000)
+  2 |      72 | 0x0024 | 0x41 ('A') | 0x0000006C (   108) | 0x006C0000     | 0x005ACA30 (   5950000)
+  3 |     108 | 0x0024 | 0x41 ('A') | 0x00000007 (     7) | 0x00070000     | 0x005ACE7C (   5951100)
+  4 |     144 | 0x0024 | 0x41 ('A') | 0x00000007 (     7) | 0x00070000     | 0x005ACE7C (   5951100)
+  5 |     180 | 0x0024 | 0x41 ('A') | 0x00000011 (    17) | 0x00110000     | 0x005ACAF8 (   5950200)
+  6 |     216 | 0x0024 | 0x41 ('A') | 0x00000064 (   100) | 0x00640000     | 0x005ACC87 (   5950599)
+  7 |     252 | 0x0024 | 0x41 ('A') | 0x0000004B (    75) | 0x004B0000     | 0x005ACBC0 (   5950400)
+  8 |     288 | 0x0024 | 0x41 ('A') | 0x00000008 (     8) | 0x00080000     | 0x005AD64B (   5953099)
+  9 |     324 | 0x0024 | 0x41 ('A') | 0x00000006 (     6) | 0x00060000     | 0x005AD390 (   5952400)
+ 10 |     360 | 0x0024 | 0x41 ('A') | 0x00000005 (     5) | 0x00050000     | 0x005AD584 (   5952900)
+ 11 |     396 | 0x0024 | 0x41 ('A') | 0x00000001 (     1) | 0x00010000     | 0x005AD64B (   5953099)
+ 12 |     432 | 0x0024 | 0x41 ('A') | 0x00000002 (     2) | 0x00020000     | 0x005AD6B0 (   5953200)
+ 13 |     468 | 0x0024 | 0x41 ('A') | 0x00000014 (    20) | 0x00140000     | 0x005AD714 (   5953300)
+ 14 |     504 | 0x0024 | 0x41 ('A') | 0x0000000C (    12) | 0x000C0000     | 0x005AD64B (   5953099)
+ 15 |     540 | 0x0024 | 0x41 ('A') | 0x00000003 (     3) | 0x00030000     | 0x005AD778 (   5953400)
+ 16 |     576 | 0x0024 | 0x41 ('A') | 0x00000005 (     5) | 0x00050000     | 0x005AD714 (   5953300)
+ 17 |     612 | 0x0024 | 0x41 ('A') | 0x00000001 (     1) | 0x00010000     | 0x005AD64B (   5953099)
+ 18 |     648 | 0x0024 | 0x41 ('A') | 0x00000064 (   100) | 0x00640000     | 0x005AD7DC (   5953500)
+ 19 |     684 | 0x0024 | 0x41 ('A') | 0x00000064 (   100) | 0x00640000     | 0x005AD840 (   5953600)
+
+--- Length-Driven Decoder Walk (2B Prefix + 36B Payload = 38B Step) ---
+Step | StreamOffset | ParsedLen | TypeAtOffset | Status
+-----+--------------+-----------+--------------+------------------------------------
+   0 |            0 | 0x0024 (   36) | 0x41         | Aligned (Block 0 header, but consumes 2B of Block 1)
+   1 |           38 | 0x4100 (16640) | 0x00         | DESYNCED (Reading mid-block bytes as length/type)
+
+VERIFY-6 / CHAR-3 RESULT: PASS (Confirmed F10: 720 bytes = 20 x 36B blocks,
+length field = 0x0024 (36), type = 0x41 ('A') only, stock/ref/side/locate = 0).

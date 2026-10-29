@@ -12,3 +12,4 @@ prep -top t2t_sfifo
 [files]
 rtl/t2t_defs.vh
 rtl/t2t_sfifo.v
+

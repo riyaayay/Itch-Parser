@@ -135,3 +135,4 @@ class EncoderModel:
             stock=stock_bytes,
             frame_bytes=bytes(frame)
         )
+

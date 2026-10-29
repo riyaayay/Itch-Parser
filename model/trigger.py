@@ -142,3 +142,4 @@ class TriggerModel:
             price=cand_price,
             qty=cfg.qty
         )
+
