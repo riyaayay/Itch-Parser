@@ -1,0 +1,44 @@
+===============================================================
+[EN & RG] Beginning Verification of Encoder & Register File
+===============================================================
+
+--- Gate EN-1: Encoder frame format ---
+[PASS] EN-1: 48-byte OUCH Enter Order frame matched wire format exactly
+
+--- Gate EN-2: Backpressure elasticity ---
+[PASS] EN-2.1: Frames absorbed in TXF without loss under backpressure
+[PASS] EN-2.2: All frames drained cleanly, order preserved
+
+--- Gate EN-3: TXF Overflow & Fault Clearing ---
+[PASS] EN-3.1: TXF full caused tx_fault=1
+[PASS] EN-3.2: tx_fault remained sticky after FIFO drained
+[PASS] EN-3.3: tx_fault cleared by clear_fault strobe
+
+--- Gate RG-1.a: AXI-Lite handshake compliance ---
+[PASS] RG-1.a: Handshake write completed with OKAY, global_enable set
+
+--- Gate RG-1.b: ID and CAPS read ---
+[PASS] RG-1.b.1: ID register read 0x74320001 with OKAY
+[PASS] RG-1.b.2: CAPS register read 0x00040987 with OKAY
+
+--- Gate RG-1.c: Control register writes ---
+[PASS] RG-1.c.1: kill_switch cleared to 0
+[PASS] RG-1.c.2: clear_counters strobe cleared live counters
+
+--- Gate RG-1.d: Rejected writes (SLVERR) ---
+[PASS] RG-1.d.1: Write to RO register returned SLVERR
+[PASS] RG-1.d.2: Write to stock while global_enable=1 returned SLVERR
+[PASS] RG-1.d.3: Write with non-zero upper bits returned SLVERR
+
+--- Gate RG-1.e: Unmapped read ---
+[PASS] RG-1.e: Unmapped address 0x024 returned 0xDEADBEEF with OKAY
+
+--- Gate RG-1.f: Shadow snapshot coherence ---
+[PASS] RG-1.f.1: Shadow counter 5 reads 0 prior to snapshot
+[PASS] RG-1.f.2: Shadow counter 5 updated to 1 atomically after snapshot
+
+===============================================================
+[EN & RG] Summary: 17 PASSED, 0 FAILED
+===============================================================
+[GATE PASS] EN-1..3, RG-1: All outbound & control plane tests passed.
+- tb/sv/tb_encoder_regs.sv:632: Verilog $finish
