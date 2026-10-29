@@ -1,0 +1,22 @@
+# tick2trade-fpga Toolchain Versions (Recorded at T0)
+Date (UTC): 2026-10-29T13:03:38Z
+OS / Kernel: Linux 6.18.33.2-microsoft-standard-WSL2 x86_64
+
+## Python
+Python 3.12.3
+
+## Icarus Verilog
+Icarus Verilog version 12.0 (stable) ()
+
+## Verilator
+Verilator 5.020 2024-01-01 rev (Debian 5.020-1)
+
+## Yosys
+Yosys 0.33 (git sha1 2584903a060)
+
+## SymbiYosys
+tools/record_versions.sh: line 31: sby: command not found
+sby: NOT INSTALLED (optional until T2/T12)
+
+## VERIFY-8: Verilator Line & Toggle Coverage Flag Verification
+VERIFY-8 STATUS: CONFIRMED (--coverage-line and --coverage-toggle supported)
