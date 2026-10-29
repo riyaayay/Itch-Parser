@@ -1,0 +1,63 @@
+===============================================================
+[RK-1] Beginning Verification of Pre-Trade Risk Engine
+===============================================================
+
+--- Limit 1: QTY ---
+[PASS] RK-1.qty.0: Qty=0 rejected with QTY
+[PASS] RK-1.qty.below: Qty=99 passed
+[PASS] RK-1.qty.at: Qty=100 passed
+[PASS] RK-1.qty.above: Qty=101 rejected with QTY
+
+--- Limit 2: NOTIONAL ---
+[PASS] RK-1.notional.below: Notional 99,900 passed
+[PASS] RK-1.notional.at: Notional 100,000 passed
+[PASS] RK-1.notional.above: Notional 101,000 rejected with NOTIONAL
+
+--- Limit 3: COLLAR ---
+[PASS] RK-1.collar.below: Delta 49 passed
+[PASS] RK-1.collar.at: Delta 50 passed
+[PASS] RK-1.collar.above: Delta 51 rejected with COLLAR
+[PASS] RK-1.collar.lower_above: Lower Delta 51 rejected with COLLAR
+
+--- Limit 4: POS_SYM ---
+[PASS] RK-1.pos_sym.99: Pos to 99 passed
+[PASS] RK-1.pos_sym.100: Pos to 100 passed
+[PASS] RK-1.pos_sym.101: Pos to 101 rejected with POS_SYM
+
+--- Limit 5: POS_GLOB ---
+[PASS] RK-1.pos_glob.150: Gross to 150 passed
+[PASS] RK-1.pos_glob.200: Gross to 200 passed
+[PASS] RK-1.pos_glob.201: Gross to 201 rejected with POS_GLOB
+
+--- Limit 6: RATE ---
+[PASS] RK-1.rate.1: 1st order in window passed
+[PASS] RK-1.rate.2: 2nd order in window passed
+[PASS] RK-1.rate.3: 3rd order rejected with RATE
+
+--- Sub-case (i): KILL ---
+[PASS] RK-1.i: kill=1 rejected with KILL
+
+--- Sub-case (j): UNKNOWN config ---
+[PASS] RK-1.j: cfg_valid=0 rejected with UNKNOWN
+
+--- Sub-case (k): Reason priority ---
+[PASS] RK-1.k.1: KILL wins over QTY
+[PASS] RK-1.k.2: TX_FAULT wins over QTY
+[PASS] RK-1.k.3: QTY wins over NOTIONAL
+[PASS] RK-1.k.4: NOTIONAL wins over COLLAR
+
+--- Sub-case (l): Back-to-back sequential consistency ---
+[PASS] RK-1.l.1: Candidate 1 passed (pos updated to 60)
+[PASS] RK-1.l.2: Candidate 2 sequentially saw Candidate 1 state and rejected with POS_SYM
+
+--- Sub-case (m): Rate window roll-over ---
+[PASS] RK-1.m: Window rolled over to idx 96, order passed
+
+--- Sub-case (n): max_orders = 0 ---
+[PASS] RK-1.n: max_orders=0 rejected with RATE
+
+===============================================================
+[RK-1] Summary: 30 PASSED, 0 FAILED
+===============================================================
+[GATE PASS] RK-1: All risk engine sub-cases verified successfully.
+- tb/sv/tb_risk.sv:613: Verilog $finish
