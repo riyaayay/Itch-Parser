@@ -1,0 +1,33 @@
+=============================================================================
+BK-1: Top-8 Order Book Engine Unit Verification
+=============================================================================
+--- Testing BK-1(n): BK-W 10-Step Reference Scenario ---
+  PASS:      Step 1 (ADD 100 q10) verified: px=100, qty=10, lv=1, hid=0, stale=0
+  PASS:        Step 2 (ADD 99 q5) verified: px=100, qty=10, lv=2, hid=0, stale=0
+  PASS:        Step 3 (ADD 98 q7) verified: px=100, qty=10, lv=2, hid=1, stale=0
+  PASS:       Step 4 (ADD 101 q3) verified: px=101, qty=3, lv=2, hid=2, stale=0
+  PASS:    Step 5 (REDUCE 101 q3) verified: px=100, qty=10, lv=1, hid=2, stale=0
+  PASS:   Step 6 (REDUCE 100 q10) verified: px=0, qty=0, lv=0, hid=2, stale=1
+  PASS:       Step 7 (ADD 105 q1) verified: px=0, qty=0, lv=0, hid=3, stale=1
+  PASS:     Step 8 (REDUCE 99 q5) verified: px=0, qty=0, lv=0, hid=2, stale=1
+  PASS:     Step 9 (REDUCE 98 q7) verified: px=0, qty=0, lv=0, hid=1, stale=1
+  PASS:   Step 10 (REDUCE 105 q1) verified: px=0, qty=0, lv=0, hid=0, stale=0
+  BK-1(n) / BK-W RESULT: PASS (All 10 steps match 100%)
+--- Testing BK-1(a): Sorted Insert Both Sides (Top-8 Book) ---
+  PASS: BK-1(a) Sorted insert on both sides verified.
+--- Testing BK-1(b): Merge at Same Price ---
+  PASS: BK-1(b) Merge at same price verified.
+--- Testing BK-1(g): Delete Middle Level ---
+  PASS: BK-1(g) Delete middle level verified.
+--- Testing BK-1(j) & (k): CORRUPT handling and stickiness ---
+  PASS: BK-1(j) & (k) CORRUPT behavior verified.
+--- Testing TH-1: Alternating Symbols Throughput (1.0 op/cycle) ---
+  TH-1: 1000 alternating ops accepted in 999 cycles (Expected exactly 1.0 op/cycle)
+  PASS: TH-1 verified (1.0 op/cycle sustained).
+--- Testing TH-2: Single-Key Throughput (0.5 op/cycle) ---
+  TH-2: In 200 continuous cycles on one key, popped 100 ops
+  PASS: TH-2 verified (exactly 0.5 op/cycle floor).
+=============================================================================
+BK-1, TH-1, TH-2 RESULT: PASS (All Order Book Gates Verified Successfully)
+=============================================================================
+- tb/sv/tb_book_core.sv:451: Verilog $finish
