@@ -1,0 +1,17 @@
+=============================================================================
+SF-1: t2t_symfilter Verification (sub-cases a through e)
+=============================================================================
+[SF-1.a] Testing hits on each of 8 slots...
+  PASS: All 8 slots hit with exact symbol index.
+[SF-1.b] Testing near misses...
+  PASS: Near misses rejected and pulsed o_cnt_miss.
+[SF-1.c] Testing non-add types (E, C, X, D, U)...
+  PASS: All non-add types passed with hit=0, sym=0.
+[SF-1.d] Testing duplicate slot stock priority...
+  PASS: Duplicate slot resolved to lowest index 1.
+[SF-1.e] Testing unused (all-zero) slot...
+  PASS: Inactive all-zero slot never hits.
+=============================================================================
+SF-1 RESULT: PASS (All sub-cases a through e verified successfully)
+=============================================================================
+- tb/sv/tb_symfilter.sv:221: Verilog $finish
