@@ -1,0 +1,27 @@
+=============================================================================
+NASDAQ ITCH 5.0 Symbol Census Report (Section 8.1)
+=============================================================================
+Input Source File : DEFAULT_SYNTHETIC
+SHA-256 Digest    : N/A
+Total Unique Tickers Tracked in Census: 8
+
+--- Selected 8 Symbol Slots (rtl/t2t_symbols.vh) ---
+Slot | Ticker   | ASCII Hex Value    | ITCH Add Count | Selection Rule
+-----+----------+--------------------+----------------+------------------------
+   0 | AAPL     | 0x4141504C20202020 |           1000 | Fixed (Slot 0..2)
+   1 | SPY      | 0x5350592020202020 |           1000 | Fixed (Slot 0..2)
+   2 | MSFT     | 0x4D53465420202020 |           1000 | Fixed (Slot 0..2)
+   3 | QQQ      | 0x5151512020202020 |            500 | Top Add Volume (Census)
+   4 | NVDA     | 0x4E56444120202020 |            450 | Top Add Volume (Census)
+   5 | TSLA     | 0x54534C4120202020 |            400 | Top Add Volume (Census)
+   6 | AMZN     | 0x414D5A4E20202020 |            350 | Top Add Volume (Census)
+   7 | META     | 0x4D45544120202020 |            300 | Top Add Volume (Census)
+
+--- Census Top 20 Candidates (Excluding Slots 0..2) ---
+ 1. QQQ      : 500 Add Orders
+ 2. NVDA     : 450 Add Orders
+ 3. TSLA     : 400 Add Orders
+ 4. AMZN     : 350 Add Orders
+ 5. META     : 300 Add Orders
+
+CENSUS RESULT: PASS (rtl/t2t_symbols.vh updated successfully).

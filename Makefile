@@ -7,7 +7,7 @@
 # ==============================================================================
 
 SHELL := /bin/bash
-PYTHON ?= python3
+PYTHON ?= PYTHONPATH=. python3
 VERILATOR ?= verilator
 IVERILOG ?= iverilog
 VVP ?= vvp
