@@ -15,5 +15,6 @@ __pycache__/
 # Vivado artifacts
 *.jou
 *.log
+!reports/**/*.log
 .Xil/
 hd_visual/
