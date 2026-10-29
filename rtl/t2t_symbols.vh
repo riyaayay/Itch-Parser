@@ -1,0 +1,22 @@
+// =============================================================================
+// File        : rtl/t2t_symbols.vh
+// Spec Section: 8.1 & 11.2
+// Description : Default 8-byte space-padded ASCII tickers for slots 0..7.
+//               Updated by tools/symbol_census.py at Task T1.
+// Copyright (c) 2026 Riya Rathod. Licensed under the MIT License.
+// =============================================================================
+
+`ifndef T2T_SYMBOLS_VH
+`define T2T_SYMBOLS_VH
+
+// Character 0 sits in bits [63:56], padded with 0x20 (' ') on the right
+`define T2T_SYM_SLOT0 64'h4141_504C_2020_2020 // "AAPL    "
+`define T2T_SYM_SLOT1 64'h5350_5920_2020_2020 // "SPY     "
+`define T2T_SYM_SLOT2 64'h4D53_4654_2020_2020 // "MSFT    "
+`define T2T_SYM_SLOT3 64'h5151_5120_2020_2020 // "QQQ     "
+`define T2T_SYM_SLOT4 64'h4E56_4441_2020_2020 // "NVDA    "
+`define T2T_SYM_SLOT5 64'h5453_4C41_2020_2020 // "TSLA    "
+`define T2T_SYM_SLOT6 64'h414D_5A4E_2020_2020 // "AMZN    "
+`define T2T_SYM_SLOT7 64'h4D45_5441_2020_2020 // "META    "
+
+`endif // T2T_SYMBOLS_VH

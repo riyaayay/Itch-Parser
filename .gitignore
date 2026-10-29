@@ -1,0 +1,19 @@
+# Build and simulation artifacts
+obj_dir/
+*.vvp
+*.vcd
+*.fst
+coverage.dat
+sim_data.hex
+
+# Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Vivado artifacts
+*.jou
+*.log
+.Xil/
+hd_visual/
