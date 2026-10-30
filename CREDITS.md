@@ -26,5 +26,5 @@ Copied byte-for-byte into `upstream/` with SHA-256 digests logged in `upstream/U
 - `rtl/ref/itch_decoder_ref.v`: Derived from `upstream/itch_decoder.v` for reference-mode verification (`EX-10`) only.
   - **Exact edits made:** Fixed Findings `F2` and `F3` where `next_state` transitioned to `IDLE` on the final payload byte (`byte_count == msg_length - 1`), preventing `order_price[7:0]` capture and preventing `order_valid` from pulsing.
 
-### 3. Original Files (Copyright (c) 2026 Riya Rathod, MIT License)
+### 3. Original Files (Copyright (c) 2026 riyaayay, MIT License)
 All files under `rtl/` (excluding `rtl/ref/itch_decoder_ref.v`), `model/`, `tools/`, `tb/`, `formal/`, `vivado/`, `scripts/`, and `docs/`.
