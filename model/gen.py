@@ -43,18 +43,17 @@ LEGACY_SHARES = [
 ]
 
 
-def write_stim_hex(beats: List[Tuple[bytes, int, bool]], out_file: pathlib.Path):
+def write_stim_hex(beats: List[Tuple[bytes, int, bool]], out_file: pathlib.Path, gap: int = 0):
     """
     Format as normative stim.hex (Section 6.3):
     <gap> <tlast> <tkeep16> <tdata128>
-    gap: decimal idle cycles before beat (0)
+    gap: decimal idle cycles before beat
     tlast: one hex digit
     tkeep16: 16 hex digits
     tdata128: 128 hex digits, byte 63 leftmost
     """
     with open(out_file, "w", encoding="ascii") as f:
         for tdata, tkeep, tlast in beats:
-            gap = 0
             tlast_str = "1" if tlast else "0"
             tkeep_str = f"{tkeep:016X}"
             # Byte 63 leftmost -> reverse bytes for MSB-first hex representation
@@ -244,7 +243,8 @@ def gen_directed_suite(out_dir: pathlib.Path):
 
 def gen_soak_suite(out_dir: pathlib.Path, num_msgs: int = 1000):
     """
-    Generates synthetic high-volume soak vector across all 8 symbols.
+    Generates synthetic high-volume soak vector across all 8 symbols
+    with mixed types (A, F, E, X, D, U), replace chains, deep books, and pacing.
     """
     out_dir.mkdir(parents=True, exist_ok=True)
     random.seed(42)
@@ -258,17 +258,18 @@ def gen_soak_suite(out_dir: pathlib.Path, num_msgs: int = 1000):
     for m_idx in range(num_msgs):
         sym = random.randint(0, 7)
         stock = DEFAULT_SYMBOLS[sym]
-        op_type = random.choices(["A", "E", "X", "D"], weights=[0.6, 0.15, 0.15, 0.1])[0]
+        op_type = random.choices(["A", "F", "E", "X", "D", "U"], weights=[0.45, 0.10, 0.15, 0.10, 0.10, 0.10])[0]
 
-        if op_type == "A" or not live_refs:
+        if op_type in ("A", "F") or not live_refs:
             ref = next_ref
             next_ref += 1
             side = random.choice([ord('B'), ord('S')])
             delta = random.randint(-50, 50) * 100
             price = max(10000, base_prices[sym] + delta)
             shares = random.randint(1, 10) * 10
+            msg_code = 0x41 if op_type == "A" else 0x46
             msg_bytes = encode_itch_message(
-                0x41, locate=sym+1, ref=ref, side=side, shares=shares, stock=stock, price=price
+                msg_code, locate=sym+1, ref=ref, side=side, shares=shares, stock=stock, price=price, attribution=b"NSDQ"
             )
             live_refs.append((ref, sym, stock, side, price))
             stream.extend(msg_bytes)
@@ -285,23 +286,45 @@ def gen_soak_suite(out_dir: pathlib.Path, num_msgs: int = 1000):
             ref = chosen[0]
             msg_bytes = encode_itch_message(0x44, locate=chosen[1]+1, ref=ref)
             stream.extend(msg_bytes)
+        elif op_type == "U":
+            idx = random.randrange(len(live_refs))
+            chosen = live_refs.pop(idx)
+            ref = chosen[0]
+            new_ref = next_ref
+            next_ref += 1
+            new_shares = random.randint(2, 12) * 10
+            new_price = max(10000, chosen[4] + (random.randint(-10, 10) * 100))
+            msg_bytes = encode_itch_message(
+                0x55, locate=chosen[1]+1, ref=ref, newref=new_ref, shares=new_shares, price=new_price
+            )
+            live_refs.append((new_ref, chosen[1], chosen[2], chosen[3], new_price))
+            stream.extend(msg_bytes)
 
     beats = AxisFramerModel.pack_stream_into_beats(bytes(stream))
-    write_stim_hex(beats, out_dir / "stim.hex")
+    # Pace at 1 cycle idle between beats (average arrival rate <= 0.8 msg/cycle)
+    write_stim_hex(beats, out_dir / "stim.hex", gap=1)
 
-    with open(out_dir / "ctrl.txt", "w", encoding="ascii") as f:
-        f.write("# Soak scenario ctrl config\n")
+    sym_cfgs = []
+    for s in range(8):
+        tcfg = TriggerConfig(
+            en=True, rule_mask=0x0F, imb_shift=0,
+            buy_limit=base_prices[s] + 100000, sell_limit=base_prices[s] - 100000,
+            max_spread=200000, qty=10
+        )
+        rcfg = RiskSymbolConfig(
+            cfg_valid=True, max_qty=500, max_notional=100_000_000,
+            collar_abs=500000, ref_px=base_prices[s], max_pos=5000
+        )
+        sym_cfgs.append((s, tcfg, rcfg))
+
+    write_ctrl_config(out_dir, sym_cfgs)
 
     with open(out_dir / "txready.txt", "w", encoding="ascii") as f:
         f.write("1\n")
 
     replay = PipelineReplay(symbols=DEFAULT_SYMBOLS)
-    for s in range(8):
-        replay.configure_symbol(
-            sym=s,
-            tcfg=TriggerConfig(en=True, rule_mask=0x0F, imb_shift=0, buy_limit=base_prices[s] + 50000, sell_limit=base_prices[s] - 50000, max_spread=200000, qty=10),
-            rcfg=RiskSymbolConfig(cfg_valid=True, max_qty=500, max_notional=100_000_000, collar_abs=500000, ref_px=base_prices[s], max_pos=5000)
-        )
+    for s, tcfg, rcfg in sym_cfgs:
+        replay.configure_symbol(sym=s, tcfg=tcfg, rcfg=rcfg)
     replay.process_beats(beats)
     replay.write_expected_outputs(out_dir)
     print(f"Soak: Successfully generated soak suite in {out_dir} ({num_msgs} msgs, {len(beats)} beats)")

@@ -126,7 +126,7 @@ module t2t_framer (
     // Does window have complete block?
     // Total block size = 2 (prefix) + parsed_len
     wire [7:0] req_bytes = 8'd2 + parsed_len[7:0];
-    wire block_complete = (b0_remain >= 8'd2) &&
+    wire block_complete = (total_win_avail >= 8'd2) &&
                           (parsed_len <= 16'd50) &&
                           (total_win_avail >= req_bytes);
 
@@ -179,6 +179,11 @@ module t2t_framer (
             o_keep_err  <= 1'b0;
             o_cnt_frame <= 1'b0;
             o_cnt_beat  <= 1'b0;
+
+            if (o_frame_err) begin
+                $display("[FRAMER-ERR] t=%0t: b0_ptr=%0d b0_bytes=%0d b0_last=%0d b1_valid=%0d b1_bytes=%0d parsed_len=%0d total_avail=%0d req_bytes=%0d",
+                         $time, b0_ptr, b0_bytes, b0_last, b1_valid, b1_bytes, parsed_len, total_win_avail, req_bytes);
+            end
 
             // Pipeline stage 1: Pull beats from ING FIFO into b1 when b1 is empty
             if (!b1_valid && i_valid && !o_pop) begin

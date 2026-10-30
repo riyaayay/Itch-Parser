@@ -34,4 +34,4 @@ Executing Test Scenario from directory: vectors/legacy
 =============================================================================
 VERIFICATION RESULT: PASS (All checks and gates passed cleanly)
 =============================================================================
-- tb/sv/tb_top.sv:790: Verilog $finish
+- tb/sv/tb_top.sv:800: Verilog $finish
