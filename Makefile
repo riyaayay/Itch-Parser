@@ -120,6 +120,14 @@ sim: model_test
 	@./obj_dir/Vtb_top +TEST=IT-3 | tee $(REPORTS_DIR)/sim/IT-3.log
 
 # ------------------------------------------------------------------------------
+# Task T10: Constrained-Random Cocotb Suite (Gate IT-4)
+# ------------------------------------------------------------------------------
+cocotb:
+	@echo "=== [COCOTB] Running Constrained-Random Verification (IT-4: 20 Seeds) ==="
+	@export PATH=/home/riya/.local/bin:$$PATH && \
+		$(MAKE) -C tb/cocotb SIM=icarus | tee $(REPORTS_DIR)/sim/IT-4.log
+
+# ------------------------------------------------------------------------------
 # Task T11: 1,000,000-Message Soak & Real ITCH Replay (G2, G3, G5)
 # ------------------------------------------------------------------------------
 soak:

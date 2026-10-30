@@ -60,7 +60,7 @@ module t2t_extract (
         end
     endfunction
 
-    wire [7:0] type_byte = b(7'd0);
+    wire [7:0] type_byte = i_blk_bytes[7:0];
 
     always @(posedge clk) begin
         if (rst) begin

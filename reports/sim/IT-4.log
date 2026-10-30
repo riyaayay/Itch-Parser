@@ -1,0 +1,130 @@
+make[1]: Entering directory '/home/riya/workspace/tick2trade-fpga/tb/cocotb'
+rm -f results.xml
+rm -f results.xml
+COCOTB_TEST_MODULES=test_t2t COCOTB_TESTCASE=  COCOTB_TOPLEVEL=t2t_top TOPLEVEL_LANG=verilog       \
+	 /usr/bin/vvp -m /home/riya/.local/lib/python3.12/site-packages/cocotb/libs/libcocotbvpi_icarus.so   sim_build/sim.vvp   
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:242  in gpi_load_users                  Loaded entry library: '/usr/lib/x86_64-linux-gnu/libpython3.12.so.1.0'
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:233  in gpi_load_users                  Running entry func 'initialize' from loaded library '/home/riya/.local/lib/python3.12/site-packages/cocotb/simulator.cpython-312-x86_64-linux-gnu.so'
+     -.--ns INFO     pygpi                              ..ib/pygpi/embed.cpp:114  in initialize                      Using Python 3.12.12 interpreter at /usr/bin/python3
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:74   in gpi_print_registered_impl       GPI: VPI support registered
+     0.00ns INFO     cocotb.initialize                  Seeding Python random module with 1793353865
+     0.00ns INFO     cocotb.initialize                  Initialized cocotb v2.1.0 from /home/riya/.local/lib/python3.12/site-packages/cocotb
+     0.00ns INFO     cocotb.initialize                  Running on Icarus Verilog version 12.0 (stable)
+     0.00ns INFO     cocotb.regression                  Running tests
+     0.00ns INFO     cocotb.regression                  running test_t2t.test_constrained_random_suite (1/1)
+                                                            Gate IT-4: Run constrained-random test suite across 20 pseudo-random seeds.
+     0.00ns INFO     cocotb.t2t_top                     =============================================================================
+     0.00ns INFO     cocotb.t2t_top                     Starting Gate IT-4: Constrained-Random Cocotb Suite (20 Seeds)
+     0.00ns INFO     cocotb.t2t_top                     =============================================================================
+     0.00ns INFO     cocotb.t2t_top                     --- Running Seed 1/20 (Seed value: 1001) ---
+     0.00ns INFO     cocotb.t2t_top                       Generated 17 beats; Expected outbound orders: 0
+  4785.00ns INFO     cocotb.t2t_top                       Diagnostics: global_en=1 non_zero_counters={0: 17, 1: 1, 6: 28, 7: 14, 8: 4, 9: 6, 13: 3, 14: 1, 18: 18, 20: 21, 26: 30, 27: 30, 29: 1, 30: 1, 44: 30}
+  4785.00ns INFO     cocotb.t2t_top                       Diagnostics: last framer len=31 valid=0
+  4785.00ns INFO     cocotb.t2t_top                       [SEED 1001] PASSED (Captured 0 orders matching model)
+  4785.00ns INFO     cocotb.t2t_top                     --- Running Seed 2/20 (Seed value: 1002) ---
+  4785.00ns INFO     cocotb.t2t_top                       Generated 17 beats; Expected outbound orders: 2
+  9545.00ns INFO     cocotb.t2t_top                       Diagnostics: global_en=1 non_zero_counters={0: 17, 1: 1, 6: 32, 7: 12, 8: 7, 9: 5, 11: 1, 12: 3, 13: 1, 15: 3, 18: 19, 20: 20, 26: 30, 27: 30, 31: 2, 32: 2, 42: 2, 44: 30}
+  9545.00ns INFO     cocotb.t2t_top                       Diagnostics: last framer len=31 valid=0
+  9545.00ns INFO     cocotb.t2t_top                       [SEED 1002] PASSED (Captured 2 orders matching model)
+  9545.00ns INFO     cocotb.t2t_top                     --- Running Seed 3/20 (Seed value: 1003) ---
+  9545.00ns INFO     cocotb.t2t_top                       Generated 18 beats; Expected outbound orders: 2
+ 14350.00ns INFO     cocotb.t2t_top                       Diagnostics: global_en=1 non_zero_counters={0: 18, 1: 1, 6: 34, 7: 10, 8: 8, 9: 5, 11: 3, 12: 4, 13: 1, 14: 3, 18: 18, 20: 19, 25: 3, 26: 32, 27: 32, 31: 2, 32: 2, 42: 2, 44: 32}
+ 14350.00ns INFO     cocotb.t2t_top                       Diagnostics: last framer len=19 valid=0
+ 14350.00ns INFO     cocotb.t2t_top                       [SEED 1003] PASSED (Captured 2 orders matching model)
+ 14350.00ns INFO     cocotb.t2t_top                     --- Running Seed 4/20 (Seed value: 1004) ---
+ 14350.00ns INFO     cocotb.t2t_top                       Generated 17 beats; Expected outbound orders: 2
+ 19130.00ns INFO     cocotb.t2t_top                       Diagnostics: global_en=1 non_zero_counters={0: 17, 1: 1, 6: 30, 7: 12, 8: 4, 9: 5, 11: 1, 12: 3, 13: 5, 18: 16, 20: 21, 25: 11, 26: 35, 27: 35, 31: 2, 32: 2, 42: 2, 44: 35}
+ 19130.00ns INFO     cocotb.t2t_top                       Diagnostics: last framer len=36 valid=0
+ 19130.00ns INFO     cocotb.t2t_top                       [SEED 1004] PASSED (Captured 2 orders matching model)
+ 19130.00ns INFO     cocotb.t2t_top                     --- Running Seed 5/20 (Seed value: 1005) ---
+ 19130.00ns INFO     cocotb.t2t_top                       Generated 21 beats; Expected outbound orders: 1
+ 23920.00ns INFO     cocotb.t2t_top                       Diagnostics: global_en=1 non_zero_counters={0: 21, 1: 1, 6: 39, 7: 12, 8: 6, 9: 11, 11: 2, 12: 4, 13: 2, 15: 2, 18: 18, 20: 20, 25: 6, 26: 39, 27: 39, 31: 1, 32: 1, 42: 1, 44: 39}
+ 23920.00ns INFO     cocotb.t2t_top                       Diagnostics: last framer len=31 valid=0
+ 23920.00ns INFO     cocotb.t2t_top                       [SEED 1005] PASSED (Captured 1 orders matching model)
+ 23920.00ns INFO     cocotb.t2t_top                     --- Running Seed 6/20 (Seed value: 1006) ---
+ 23920.00ns INFO     cocotb.t2t_top                       Generated 18 beats; Expected outbound orders: 0
+ 28720.00ns INFO     cocotb.t2t_top                       Diagnostics: global_en=1 non_zero_counters={0: 18, 1: 1, 6: 35, 7: 14, 8: 4, 9: 5, 11: 2, 12: 6, 13: 2, 14: 1, 15: 1, 18: 18, 20: 20, 25: 4, 26: 35, 27: 35, 44: 35}
+ 28720.00ns INFO     cocotb.t2t_top                       Diagnostics: last framer len=35 valid=0
+ 28720.00ns INFO     cocotb.t2t_top                       [SEED 1006] PASSED (Captured 0 orders matching model)
+ 28720.00ns INFO     cocotb.t2t_top                     --- Running Seed 7/20 (Seed value: 1007) ---
+ 28720.00ns INFO     cocotb.t2t_top                       Generated 18 beats; Expected outbound orders: 0
+ 33475.00ns INFO     cocotb.t2t_top                       Diagnostics: global_en=1 non_zero_counters={0: 16, 6: 29, 7: 15, 8: 4, 9: 2, 11: 2, 12: 3, 14: 3, 18: 19, 20: 19, 25: 3, 26: 26, 27: 26, 44: 26}
+ 33475.00ns INFO     cocotb.t2t_top                       Diagnostics: last framer len=19 valid=0
+ 33475.00ns INFO     cocotb.t2t_top                       [SEED 1007] PASSED (Captured 0 orders matching model)
+ 33475.00ns INFO     cocotb.t2t_top                     --- Running Seed 8/20 (Seed value: 1008) ---
+ 33475.00ns INFO     cocotb.t2t_top                       Generated 18 beats; Expected outbound orders: 2
+ 38285.00ns INFO     cocotb.t2t_top                       Diagnostics: global_en=1 non_zero_counters={0: 18, 1: 1, 6: 35, 7: 13, 8: 5, 9: 7, 11: 3, 12: 4, 13: 1, 14: 1, 15: 1, 18: 18, 20: 19, 25: 2, 26: 34, 27: 34, 31: 2, 32: 2, 42: 2, 44: 34}
+ 38285.00ns INFO     cocotb.t2t_top                       Diagnostics: last framer len=23 valid=0
+ 38285.00ns INFO     cocotb.t2t_top                       [SEED 1008] PASSED (Captured 2 orders matching model)
+ 38285.00ns INFO     cocotb.t2t_top                     --- Running Seed 9/20 (Seed value: 1009) ---
+ 38285.00ns INFO     cocotb.t2t_top                       Generated 17 beats; Expected outbound orders: 0
+ 43050.00ns INFO     cocotb.t2t_top                       Diagnostics: global_en=1 non_zero_counters={0: 17, 1: 1, 6: 33, 7: 11, 8: 7, 9: 3, 11: 3, 12: 5, 13: 1, 14: 2, 15: 1, 18: 18, 20: 19, 26: 31, 27: 31, 44: 31}
+ 43050.00ns INFO     cocotb.t2t_top                       Diagnostics: last framer len=23 valid=0
+ 43050.00ns INFO     cocotb.t2t_top                       [SEED 1009] PASSED (Captured 0 orders matching model)
+ 43050.00ns INFO     cocotb.t2t_top                     --- Running Seed 10/20 (Seed value: 1010) ---
+ 43050.00ns INFO     cocotb.t2t_top                       Generated 17 beats; Expected outbound orders: 2
+ 47815.00ns INFO     cocotb.t2t_top                       Diagnostics: global_en=1 non_zero_counters={0: 17, 1: 1, 6: 32, 7: 11, 8: 5, 9: 6, 11: 1, 12: 2, 13: 4, 14: 1, 15: 2, 18: 16, 20: 20, 25: 2, 26: 33, 27: 33, 31: 2, 32: 2, 42: 2, 44: 33}
+ 47815.00ns INFO     cocotb.t2t_top                       Diagnostics: last framer len=19 valid=0
+ 47815.00ns INFO     cocotb.t2t_top                       [SEED 1010] PASSED (Captured 2 orders matching model)
+ 47815.00ns INFO     cocotb.t2t_top                     --- Running Seed 11/20 (Seed value: 1011) ---
+ 47815.00ns INFO     cocotb.t2t_top                       Generated 18 beats; Expected outbound orders: 1
+ 52550.00ns INFO     cocotb.t2t_top                       Diagnostics: global_en=1 non_zero_counters={0: 18, 1: 1, 6: 34, 7: 12, 8: 5, 9: 9, 11: 3, 12: 2, 14: 2, 15: 1, 18: 17, 20: 17, 25: 3, 26: 31, 27: 31, 31: 1, 32: 1, 42: 1, 44: 31}
+ 52550.00ns INFO     cocotb.t2t_top                       Diagnostics: last framer len=19 valid=0
+ 52550.00ns INFO     cocotb.t2t_top                       [SEED 1011] PASSED (Captured 1 orders matching model)
+ 52550.00ns INFO     cocotb.t2t_top                     --- Running Seed 12/20 (Seed value: 1012) ---
+ 52550.00ns INFO     cocotb.t2t_top                       Generated 16 beats; Expected outbound orders: 1
+ 57275.00ns INFO     cocotb.t2t_top                       Diagnostics: global_en=1 non_zero_counters={0: 16, 1: 1, 6: 30, 7: 12, 8: 5, 9: 2, 11: 2, 12: 2, 13: 3, 14: 3, 15: 1, 18: 17, 20: 20, 25: 5, 26: 29, 27: 29, 31: 1, 32: 1, 42: 1, 44: 29}
+ 57275.00ns INFO     cocotb.t2t_top                       Diagnostics: last framer len=31 valid=0
+ 57275.00ns INFO     cocotb.t2t_top                       [SEED 1012] PASSED (Captured 1 orders matching model)
+ 57275.00ns INFO     cocotb.t2t_top                     --- Running Seed 13/20 (Seed value: 1013) ---
+ 57275.00ns INFO     cocotb.t2t_top                       Generated 17 beats; Expected outbound orders: 0
+ 62045.00ns INFO     cocotb.t2t_top                       Diagnostics: global_en=1 non_zero_counters={0: 15, 6: 27, 7: 10, 8: 4, 9: 3, 11: 4, 12: 1, 13: 3, 14: 1, 15: 1, 18: 14, 20: 17, 25: 2, 26: 28, 27: 28, 44: 28}
+ 62045.00ns INFO     cocotb.t2t_top                       Diagnostics: last framer len=0 valid=0
+ 62045.00ns INFO     cocotb.t2t_top                       [SEED 1013] PASSED (Captured 0 orders matching model)
+ 62045.00ns INFO     cocotb.t2t_top                     --- Running Seed 14/20 (Seed value: 1014) ---
+ 62045.00ns INFO     cocotb.t2t_top                       Generated 19 beats; Expected outbound orders: 1
+ 66865.00ns INFO     cocotb.t2t_top                       Diagnostics: global_en=1 non_zero_counters={0: 19, 1: 1, 6: 32, 7: 16, 8: 6, 9: 6, 11: 3, 13: 1, 18: 22, 20: 23, 25: 6, 26: 33, 27: 33, 31: 1, 32: 1, 42: 1, 44: 33}
+ 66865.00ns INFO     cocotb.t2t_top                       Diagnostics: last framer len=31 valid=0
+ 66865.00ns INFO     cocotb.t2t_top                       [SEED 1014] PASSED (Captured 1 orders matching model)
+ 66865.00ns INFO     cocotb.t2t_top                     --- Running Seed 15/20 (Seed value: 1015) ---
+ 66865.00ns INFO     cocotb.t2t_top                       Generated 16 beats; Expected outbound orders: 0
+ 71610.00ns INFO     cocotb.t2t_top                       Diagnostics: global_en=1 non_zero_counters={0: 16, 1: 1, 6: 31, 7: 8, 8: 7, 9: 7, 11: 1, 12: 3, 13: 2, 14: 1, 15: 2, 18: 15, 20: 17, 25: 2, 26: 30, 27: 30, 44: 30}
+ 71610.00ns INFO     cocotb.t2t_top                       Diagnostics: last framer len=0 valid=0
+ 71610.00ns INFO     cocotb.t2t_top                       [SEED 1015] PASSED (Captured 0 orders matching model)
+ 71610.00ns INFO     cocotb.t2t_top                     --- Running Seed 16/20 (Seed value: 1016) ---
+ 71610.00ns INFO     cocotb.t2t_top                       Generated 17 beats; Expected outbound orders: 1
+ 76385.00ns INFO     cocotb.t2t_top                       Diagnostics: global_en=1 non_zero_counters={0: 11, 6: 17, 7: 8, 8: 6, 9: 1, 11: 2, 18: 14, 20: 14, 25: 2, 26: 17, 27: 17, 31: 1, 32: 1, 42: 1, 44: 17}
+ 76385.00ns INFO     cocotb.t2t_top                       Diagnostics: last framer len=31 valid=0
+ 76385.00ns INFO     cocotb.t2t_top                       [SEED 1016] PASSED (Captured 1 orders matching model)
+ 76385.00ns INFO     cocotb.t2t_top                     --- Running Seed 17/20 (Seed value: 1017) ---
+ 76385.00ns INFO     cocotb.t2t_top                       Generated 20 beats; Expected outbound orders: 1
+ 81180.00ns INFO     cocotb.t2t_top                       Diagnostics: global_en=1 non_zero_counters={0: 12, 6: 18, 7: 9, 8: 8, 11: 1, 18: 17, 20: 17, 26: 18, 27: 18, 31: 1, 32: 1, 42: 1, 44: 18}
+ 81180.00ns INFO     cocotb.t2t_top                       Diagnostics: last framer len=23 valid=0
+ 81180.00ns INFO     cocotb.t2t_top                       [SEED 1017] PASSED (Captured 1 orders matching model)
+ 81180.00ns INFO     cocotb.t2t_top                     --- Running Seed 18/20 (Seed value: 1018) ---
+ 81180.00ns INFO     cocotb.t2t_top                       Generated 19 beats; Expected outbound orders: 0
+ 85985.00ns INFO     cocotb.t2t_top                       Diagnostics: global_en=1 non_zero_counters={0: 19, 1: 1, 6: 34, 7: 11, 8: 8, 9: 9, 11: 2, 12: 1, 13: 1, 14: 2, 18: 19, 20: 20, 25: 4, 26: 33, 27: 33, 44: 33}
+ 85985.00ns INFO     cocotb.t2t_top                       Diagnostics: last framer len=31 valid=0
+ 85985.00ns INFO     cocotb.t2t_top                       [SEED 1018] PASSED (Captured 0 orders matching model)
+ 85985.00ns INFO     cocotb.t2t_top                     --- Running Seed 19/20 (Seed value: 1019) ---
+ 85985.00ns INFO     cocotb.t2t_top                       Generated 17 beats; Expected outbound orders: 0
+ 90775.00ns INFO     cocotb.t2t_top                       Diagnostics: global_en=1 non_zero_counters={0: 17, 1: 1, 6: 32, 7: 8, 8: 7, 9: 7, 11: 3, 12: 3, 13: 2, 14: 2, 18: 15, 20: 17, 25: 3, 26: 32, 27: 32, 44: 32}
+ 90775.00ns INFO     cocotb.t2t_top                       Diagnostics: last framer len=35 valid=0
+ 90775.00ns INFO     cocotb.t2t_top                       [SEED 1019] PASSED (Captured 0 orders matching model)
+ 90775.00ns INFO     cocotb.t2t_top                     --- Running Seed 20/20 (Seed value: 1020) ---
+ 90775.00ns INFO     cocotb.t2t_top                       Generated 15 beats; Expected outbound orders: 4
+ 95525.00ns INFO     cocotb.t2t_top                       Diagnostics: global_en=1 non_zero_counters={0: 15, 1: 1, 6: 31, 7: 10, 8: 5, 9: 4, 11: 3, 12: 3, 13: 2, 15: 4, 18: 15, 20: 17, 25: 3, 26: 29, 27: 29, 31: 4, 32: 4, 42: 4, 44: 29}
+ 95525.00ns INFO     cocotb.t2t_top                       Diagnostics: last framer len=0 valid=0
+ 95525.00ns INFO     cocotb.t2t_top                       [SEED 1020] PASSED (Captured 4 orders matching model)
+ 95525.00ns INFO     cocotb.t2t_top                     =============================================================================
+ 95525.00ns INFO     cocotb.t2t_top                     GATE IT-4 PASSED: All 20/20 seeds passed with 0 mismatches!
+ 95525.00ns INFO     cocotb.t2t_top                     =============================================================================
+ 95525.00ns INFO     cocotb.regression                  test_t2t.test_constrained_random_suite passed
+ 95525.00ns INFO     cocotb.regression                  ************************************************************************************************
+                                                        ** TEST                                    STATUS  SIM TIME (ns)  REAL TIME (s)  RATIO (ns/s) **
+                                                        ************************************************************************************************
+                                                        ** test_t2t.test_constrained_random_suite   PASS       95525.00          16.38       5832.07  **
+                                                        ************************************************************************************************
+                                                        ** TESTS=1 PASS=1 FAIL=0 SKIP=0                        95525.00          16.38       5831.44  **
+                                                        ************************************************************************************************
+make[1]: Leaving directory '/home/riya/workspace/tick2trade-fpga/tb/cocotb'
